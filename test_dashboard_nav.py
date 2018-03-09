@@ -19,14 +19,14 @@ def wait_for_selector(browser, selector, timeout=10):
 
 
 
-def test_items(browser, visited=None):
-    tree_root_url = browser.current_url
+def test_items(authenticated_browser, visited=None):
+    tree_root_url = authenticated_browser.current_url
     if visited is None:
         visited = set()
 
-    wait_for_selector(browser, '.item_link')
-    items = get_list_items(browser)
-    print(browser.current_url, len(items))
+    wait_for_selector(authenticated_browser, '.item_link')
+    items = get_list_items(authenticated_browser)
+    print(authenticated_browser.current_url, len(items))
     for item in items:
         print(item)
         url = item['link']
@@ -35,11 +35,11 @@ def test_items(browser, visited=None):
             if url in visited:
                 continue
             visited.add(url)
-            browser.get(url)
-            wait_for_selector(browser, '.item_link')
-            assert browser.current_url == url
+            authenticated_browser.get(url)
+            wait_for_selector(authenticated_browser, '.item_link')
+            assert authenticated_browser.current_url == url
 
-            test_items(browser, visited)
+            test_items(authenticated_browser, visited)
             #browser.back()
 
     print()
